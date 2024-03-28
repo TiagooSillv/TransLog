@@ -1,0 +1,89 @@
+﻿@page "/tela-principal"
+@using Frontend.Model.Request;
+@using Frontend.Model.Response;
+<h3>Calculo de Frete TransLog </h3>
+<EditForm Model="_produto" OnValidSubmit="CalcularFrete">
+    @* <DataAnnotationsValidator /> *@
+    <div class="row">
+        <div class="col-4">
+            <label>Distância(KM) </label>
+            <InputNumber @bind-Value="_produto.Distancia"></InputNumber>
+        </div>
+        <div class="col-4">
+            <label>Peso(Kg)</label>
+            <InputNumber @bind-Value="_produto.Peso"></InputNumber>
+            <ValidationMessage For="()=> _produto.Peso" />
+
+        </div>
+        <div class="col-4">
+            <label>Largura(m)</label>
+            <InputNumber @bind-Value="_produto.Largura"></InputNumber>
+            <ValidationMessage For="()=> _produto.Largura" />
+
+        </div>
+        <div class="col-4">
+            <label>Altura(m)</label>
+            <InputNumber @bind-Value="_produto.Altura"></InputNumber>
+            <ValidationMessage For="()=> _produto.Altura" />
+
+        </div>
+        <div class="col-4">
+            <label>Comprimento(m)</label>
+            <InputNumber @bind-Value="_produto.Comprimento"></InputNumber>
+            <ValidationMessage For="()=> _produto.Comprimento" />
+
+        </div>
+        <div class="col-4">
+            <label>Valor Adicional(m)</label>
+            <InputNumber @bind-Value="_produto.ValorAdicional"></InputNumber>
+            <ValidationMessage For="()=> _produto.ValorAdicional" />
+
+        </div>
+    </div>
+    <div class="col-2">
+        <label></label>
+        <button type="submit" class="btn btn-outline-primary mt-2">
+            Calcular Frete
+        </button>
+    </div>
+    <div class="row mt-4 p-5">
+        <div class="col-md-12">
+            <div class="h-100 text-center p-5 rounded-3"
+                 style="background:@_produtoResponse.CustoFrete">
+            </div>
+        </div>
+    </div>
+
+    @if (valorFrete)
+{
+    <p>@_produtoResponse.CustoFrete</p>
+}
+
+</EditForm>
+
+@code {
+    public Produto _produto { get; set; } = new();
+    public ProdutoResponse _produtoResponse { get; set; } = new();
+    private bool valorFrete = false;
+
+    private async Task CalcularFrete()
+    {
+        var apiUrl = $"https://localhost:7120/controller/obter?Distancia={_produto.Distancia}&Peso={_produto.Peso}&Largura={_produto.Largura}&Altura={_produto.Altura}&Comprimento={_produto.Comprimento}&ValorAdicional={_produto.ValorAdicional}";
+        var http = new HttpClient();
+
+        try
+        {
+            _produtoResponse = await http.GetFromJsonAsync<ProdutoResponse>(apiUrl);
+            if (_produtoResponse.CustoFrete >= 0)
+            {
+                valorFrete = true;
+            }
+             
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+}

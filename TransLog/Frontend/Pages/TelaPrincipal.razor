@@ -46,15 +46,17 @@
             Calcular Frete
         </button>
     </div>
-    @if (valorFrete)
-{
     <div class="row mt-4 p-5">
         <div class="col-md-12">
             <div class="h-100 text-center p-5 rounded-3"
-                     style="background:@_produtoResponse.CustoFrete">
+                 style="background:@_produtoResponse.CustoFrete">
             </div>
         </div>
     </div>
+
+    @if (valorFrete)
+{
+    <p>@_produtoResponse.CustoFrete</p>
 }
 
 </EditForm>

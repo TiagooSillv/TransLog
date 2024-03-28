@@ -1,6 +1,6 @@
-﻿namespace Frontend.Model.Request
+﻿namespace Backend.Model.Request
 {
-    public class Produto
+    public class ProdutoRequest
     {
         public int Distancia { get; set; }
         public decimal Peso { get; set; }

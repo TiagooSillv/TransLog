@@ -14,9 +14,11 @@ namespace Backend.Controllers
         [Route("obter")]
         public IActionResult ObterValorFrete([FromQuery] ProdutoRequest request)
         {
+            var resultado = new ProdutoResponse();
+            
             var custoFrete = (request.Distancia * request.Distancia) + (request.Peso * request.ValorAdicional) + (request.Largura * request.Altura * (request.ValorAdicional * 3));
-
-            return Ok(custoFrete);
+            resultado.CustoFrete = Convert.ToInt32(custoFrete);
+            return Ok(resultado);
             
         }
     }
